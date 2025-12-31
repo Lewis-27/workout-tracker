@@ -1,0 +1,12 @@
+{
+  "name": "workout-tracker",
+  "version": "1.0.0",
+  "description": "Web app for tracking workouts",
+  "license": "MIT",
+  "author": "Lewis Miller",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
