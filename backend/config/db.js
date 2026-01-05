@@ -13,8 +13,3 @@ const pool = new Pool({
   database: process.env.PG_DATABASE
 })
 
-// export const dbTest = async () => {
-//   console.log(process.env)
-//   const res = await pool.query('SELECT * FROM users')
-//   return res
-// }
