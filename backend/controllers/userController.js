@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler"
 
-import { registerUserDB, getUserByEmailDB, getUserByIdDB } from "../config/db.js"
+import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB } from "../config/db.js"
+import e from "express";
 
 //@desc Authorise user and create login token
 //route POST /api/users/auth
@@ -9,13 +10,22 @@ const authUser = asyncHandler(async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  const user = await getUserByEmailDB(email);
-  console.log(user)
-  if(user && (user.password === password)) {
-    res.status(200).send('User authorised')
+  const response = await authUserDB(email, password)
+
+  if(response){
+    res.status(200).send('Authorised');
   } else {
-    res.status(400).send('Invalid details')
+    res.status(400).send('Not authorised')
   }
+
+  res.status(200).send(response)
+  // const user = await getUserByEmailDB(email);
+  // console.log(user)
+  // if(user && (user.password === password)) {
+  //   res.status(200).send('User authorised')
+  // } else {
+  //   res.status(400).send('Invalid details')
+  // }
 })
 
 //@desc Register user
