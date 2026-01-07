@@ -49,7 +49,11 @@ const authUserDB = async (email, password) => {
     console.log({user})
     const passwordDB = user.password
     if(await bcrypt.compare(password, passwordDB)){
-      return true
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name
+      }
     } else {
       return false
     }

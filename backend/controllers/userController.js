@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler"
 
 import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB } from "../config/db.js"
-import e from "express";
+
+import generateToken from "../utils/generateToken.js";
 
 //@desc Authorise user and create login token
 //route POST /api/users/auth
@@ -13,7 +14,8 @@ const authUser = asyncHandler(async (req, res) => {
   const response = await authUserDB(email, password)
 
   if(response){
-    res.status(200).send('Authorised');
+    generateToken(res, response.id)
+    res.status(200).send(response);
   } else {
     res.status(400).send('Not authorised')
   }
