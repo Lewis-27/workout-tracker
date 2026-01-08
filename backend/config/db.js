@@ -30,7 +30,7 @@ const getUserByEmailDB = async (email) => {
 }
 
 const getUserByIdDB = async (id) => {
-  const res = await pool.query('SELECT * FROM users WHERE id=$1', [id])
+  const res = await pool.query('SELECT name, email FROM users WHERE id=$1', [id])
   return res.rows[0]
 }
 

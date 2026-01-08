@@ -52,6 +52,10 @@ const registerUser = asyncHandler(async (req, res) => {
 //route POST /api/users/logout
 //@access public
 const logoutUser = asyncHandler(async (req, res) => {
+  res.cookie('jwt', '', {
+    httpOnly: 'true',
+    expires: new Date(0)
+  })
   res.status(200).send('User logged out')
 })
 
@@ -59,6 +63,17 @@ const logoutUser = asyncHandler(async (req, res) => {
 //route GET /api/users/profile
 //@access private
 const getUserProfile = asyncHandler(async (req, res) => {
+  try {
+    const user = req.user
+    if(user){
+      res.status(200).json(user)
+    } else {
+      throw new Error('Not authorised')
+    }
+  } catch (error) {
+    res.status(400)
+    throw new Error('Error fetching user data')
+  }
   res.status(200).send('User profile')
 })
 
