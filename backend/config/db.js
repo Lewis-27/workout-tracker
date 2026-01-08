@@ -65,7 +65,7 @@ const authUserDB = async (email, password) => {
 
 const updateUserProfileDB = async (userId, newDetails) => {
   const currentDetails = await getUserByIdDB(userId);
-  const updatedUser = {
+  const updatedDetails = {
     name: newDetails.name || currentDetails.name,
     email: newDetails.email || currentDetails.email,
     password: newDetails.password ? await(hashPassword(newDetails.password)) : currentDetails.password
@@ -73,16 +73,26 @@ const updateUserProfileDB = async (userId, newDetails) => {
   try {
     await pool.query('BEGIN');
     const queryText = 'UPDATE users SET name=$2, email=$3, password=$4 WHERE id=$1 RETURNING *'
-    const queryValues = [userId, updatedUser.name, updatedUser.email, updatedUser.password]
-    await pool.query(queryText, queryValues)
+    const queryValues = [userId, updatedDetails.name, updatedDetails.email, updatedDetails.password]
+    const updatedUser = await pool.query(queryText, queryValues)
     await pool.query('COMMIT')
+    return updatedUser.rows[0]
   } catch (error) {
     await pool.query('ROLLBACK')
     throw new Error('Error updating profile')
+  }
+}
+
+const deleteUserDB = async (userId) => {
+  try {
+    const deletedUser = await pool.query('DELETE FROM users WHERE id=$1 RETURNING *', [userId])
+    return deletedUser.rows[0]  
+  } catch (error) {
+    throw new Error('Error deleting user')
   }
   
 }
 
 
 
-export { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, getUserProfileByIdDB, updateUserProfileDB }
+export { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, getUserProfileByIdDB, updateUserProfileDB, deleteUserDB }

@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler"
 
-import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, updateUserProfileDB } from "../config/db.js"
+import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, updateUserProfileDB, deleteUserDB } from "../config/db.js"
 
 import generateToken from "../utils/generateToken.js";
 
@@ -41,6 +41,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password: req.body.password
     };
     const newUser = await registerUserDB(user);
+    generateToken(res, newUser.id)
     res.status(201).send(newUser);
   } catch (error) {
     throw error
@@ -83,15 +84,21 @@ const getUserProfile = asyncHandler(async (req, res) => {
 const updateUserProfile = asyncHandler(async (req, res) => {
   const updatedDetails = req.body
   console.log({userId: req.user.id})
-  const response = await updateUserProfileDB(req.user.id, updatedDetails)
-  res.status(200).send('User profile updated')
+  const updatedUser = await updateUserProfileDB(req.user.id, updatedDetails)
+  res.status(201).json(updatedUser)
 })
 
 //@desc Delete user 
 //route DELETE /api/users/profile
 //@access private
 const deleteUser = asyncHandler(async (req, res) => {
-  res.status(200).send('User deleted')
+  const userId = req.user.id
+  const deletedUser = await deleteUserDB(userId)
+  res.cookie('jwt', '', {
+    httpOnly: 'true',
+    expires: new Date(0)
+  })
+  res.status(200).json(deletedUser)
 })
 
 export {
