@@ -20,17 +20,18 @@ const hashPassword = async (password) => {
   return hashedPassword;
 }
 
-const comparePasswords = async (passwordDB, passwordEntered) => {
-  return await bcrypt.compare(passwordDB, passwordEntered)
-}
-
 const getUserByEmailDB = async (email) => {
   const res = await pool.query('SELECT * FROM users WHERE email=$1', [email])
   return res.rows[0]
 }
 
+const getUserProfileByIdDB = async (id) => {
+  const res = await pool.query('SELECT id, name, email FROM users WHERE id=$1', [id])
+  return res.rows[0]
+}
+
 const getUserByIdDB = async (id) => {
-  const res = await pool.query('SELECT name, email FROM users WHERE id=$1', [id])
+  const res = await pool.query('SELECT * FROM users WHERE id=$1', [id])
   return res.rows[0]
 }
 
@@ -57,13 +58,31 @@ const authUserDB = async (email, password) => {
     } else {
       return false
     }
-    
   } catch (error) {
-    
+    throw new Error('Failed to authorise user')
+  }
+}
+
+const updateUserProfileDB = async (userId, newDetails) => {
+  const currentDetails = await getUserByIdDB(userId);
+  const updatedUser = {
+    name: newDetails.name || currentDetails.name,
+    email: newDetails.email || currentDetails.email,
+    password: newDetails.password ? await(hashPassword(newDetails.password)) : currentDetails.password
+  }
+  try {
+    await pool.query('BEGIN');
+    const queryText = 'UPDATE users SET name=$2, email=$3, password=$4 WHERE id=$1 RETURNING *'
+    const queryValues = [userId, updatedUser.name, updatedUser.email, updatedUser.password]
+    await pool.query(queryText, queryValues)
+    await pool.query('COMMIT')
+  } catch (error) {
+    await pool.query('ROLLBACK')
+    throw new Error('Error updating profile')
   }
   
 }
 
 
 
-export { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB }
+export { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, getUserProfileByIdDB, updateUserProfileDB }

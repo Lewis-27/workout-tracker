@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler"
 
-import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB } from "../config/db.js"
+import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, updateUserProfileDB } from "../config/db.js"
 
 import generateToken from "../utils/generateToken.js";
 
@@ -81,6 +81,9 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //route PUT /api/users/profile
 //@access private
 const updateUserProfile = asyncHandler(async (req, res) => {
+  const updatedDetails = req.body
+  console.log({userId: req.user.id})
+  const response = await updateUserProfileDB(req.user.id, updatedDetails)
   res.status(200).send('User profile updated')
 })
 

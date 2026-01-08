@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import jwt from 'jsonwebtoken'
-import { getUserByIdDB } from '../config/db.js';
+import { getUserProfileByIdDB } from '../config/db.js';
 
 const protect = asyncHandler( async(req, res, next) => {
   let token;
@@ -8,7 +8,7 @@ const protect = asyncHandler( async(req, res, next) => {
   if(token){
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
-      req.user = await getUserByIdDB(decoded.userId)
+      req.user = await getUserProfileByIdDB(decoded.userId)
       next()
     } catch (error) {
       res.status(401)
