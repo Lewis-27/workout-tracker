@@ -1,6 +1,6 @@
 import asyncHandler from "express-async-handler"
 
-import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, updateUserProfileDB, deleteUserDB } from "../config/db.js"
+import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, updateUserProfileDB, deleteUserDB } from "../config/usersDB.js"
 
 import generateToken from "../utils/generateToken.js";
 
