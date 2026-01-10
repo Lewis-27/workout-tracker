@@ -12,7 +12,6 @@ const getUserWorkouts = asyncHandler( async(req, res) => {
     res.status(400)
     throw new Error('Error fetching workouts')
   }
-  
 })
 
 //@desc GET /workouts/:id

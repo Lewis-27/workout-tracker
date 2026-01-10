@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from "dotenv"
 import userRoutes from './routes/userRoutes.js'
 import workoutsRoutes from './routes/workoutsRoutes.js'
+import exerciseRoutes from './routes/exerciseRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import cookieParser from 'cookie-parser'
 
@@ -19,6 +20,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use('/api/users', userRoutes)
 app.use('/api/workouts', workoutsRoutes)
+app.use('/api/exercises', exerciseRoutes)
 
 app.use(notFound);
 app.use(errorHandler);
