@@ -19,7 +19,7 @@ const Header = () => {
       <Link to={'/'}>
         <Button variant='ghost'>Workout Tracker</Button>
       </Link>
-      {user.name !== undefined
+      {user.name
         ? <NavigationMenu >
             <NavigationMenuList >
               <NavigationMenuItem >

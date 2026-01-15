@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useState, useEffect } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/field'
 import { Button } from './ui/button'
 import { toast } from 'sonner'
+import { Spinner } from './ui/spinner'
 
 const LoginForm = () => {
 
@@ -33,33 +34,38 @@ const LoginForm = () => {
     }
   }, [])
 
-
   const loginMutation = useMutation({
     mutationFn: async (enteredDetails) => {
-      const res = await axios.post('/api/users/auth', enteredDetails, {withCredentials: true})
-      return res.data
+      return await axios.post('/api/users/auth', enteredDetails, {withCredentials: true})
     }
   })
+
+  useEffect(() => {
+    if(loginMutation.status === 'success'){
+        updateUserDetails(loginMutation.data.data)
+        localStorage.setItem('userInfo', JSON.stringify(loginMutation.data.data))  
+        navigate('/')
+    } else if(loginMutation.status === 'error') {
+      toast.error('Failed to log in')
+    }
+  }, [loginMutation.status])
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      loginMutation.mutate({email,password})
-      if(loginMutation.data){
-        updateUserDetails(loginMutation.data)
-        localStorage.setItem('userInfo', loginMutation.data)  
-        navigate('/')
-      } else {
-        throw new Error('Invalid Credentials')
-      }
+      console.log({email, password})
+      await loginMutation.mutateAsync({email,password})
     } catch (error) {
-      toast.error(error.message)
+      
     }
 
   }
 
   return (
     <div className='w-100 '>
+      {loginMutation.status === <Spinner className={'size-16'}></Spinner> ? 'loading' : 
       <form id='loginForm' onSubmit={handleSubmit}>
         <FieldSet >
           <FieldGroup>
@@ -89,7 +95,7 @@ const LoginForm = () => {
             </Field>
           </FieldGroup>
         </FieldSet>        
-      </form>
+      </form>}
 
     </div>
   )
