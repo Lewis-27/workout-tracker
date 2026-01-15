@@ -40,14 +40,13 @@ const registerUserDB = async (user) => {
     ...user,
     password : await hashPassword(user.password)
   }
-  const res = await pool.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING *', [user.name, user.email, hashedUser.password])
+  const res = await pool.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING name, email, password', [user.name, user.email, hashedUser.password])
   return res.rows[0]
 }
 
 const authUserDB = async (email, password) => {
   try {
     const user = await getUserByEmailDB(email)
-    console.log({user})
     const passwordDB = user.password
     if(await bcrypt.compare(password, passwordDB)){
       return {

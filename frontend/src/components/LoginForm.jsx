@@ -55,7 +55,6 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      console.log({email, password})
       await loginMutation.mutateAsync({email,password})
     } catch (error) {
       
@@ -65,7 +64,7 @@ const LoginForm = () => {
 
   return (
     <div className='w-100 '>
-      {loginMutation.status === <Spinner className={'size-16'}></Spinner> ? 'loading' : 
+      {loginMutation.status === 'pending' ?<Spinner className={'size-16'}></Spinner>  : 
       <form id='loginForm' onSubmit={handleSubmit}>
         <FieldSet >
           <FieldGroup>
