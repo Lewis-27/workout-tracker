@@ -21,7 +21,7 @@ const getExercisesByUserDB = async (userId) => {
 }
 
 const getExercisesByWorkoutDB = async (userId, workoutId) => {
-  const res = await pool.query('SELECT * FROM exercises INNER JOIN workouts ON exercises.workout_id = workouts.id WHERE workouts.owner=$1 AND exercises.workout_id=$2', [userId, workoutId])
+  const res = await pool.query('SELECT exercises.id, workout_id, exercise_name, muscle_group, owner, workout_name, exercises.time_created FROM exercises INNER JOIN workouts ON exercises.workout_id = workouts.id WHERE workouts.owner=$1 AND exercises.workout_id=$2 ORDER BY exercises.time_created ASC', [userId, workoutId])
   return res.rows
 }
 

@@ -23,7 +23,7 @@ const getSetsByWorkoutDB = async(workoutId) => {
 
 const getSetsByExerciseDB = async(exerciseId) => {
   const res = await pool.query(
-    'SELECT sets.id, exercise_id, exercise_name, weight, reps FROM sets INNER JOIN exercises ON sets.exercise_id = exercises.id WHERE exercise_id=$1',
+    'SELECT sets.id, exercise_id, exercise_name, weight, reps, sets.time_created FROM sets INNER JOIN exercises ON sets.exercise_id = exercises.id WHERE exercise_id=$1 ORDER BY sets.time_created ASC',
     [exerciseId]
   )
   return res.rows
@@ -53,7 +53,6 @@ const updateSetDB = async(setId, updatedSet) => {
 
 const deleteSetDB = async(setId) => {
   const res = await pool.query('DELETE FROM sets WHERE id=$1 RETURNING *', [setId])
-  console.log(res)
   return res.rows[0]
 }
 

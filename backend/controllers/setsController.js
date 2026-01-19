@@ -38,7 +38,6 @@ const getSetsByExercise = asyncHandler( async(req, res) => {
 } )
 
 const getSetById = asyncHandler( async(req, res) => {
-  console.log(res)
   try {
     const set = await getSetByIdDB(req.params.id)
     if(set){
@@ -76,7 +75,6 @@ const addSet = asyncHandler( async(req, res) => {
 
 const updateSet = asyncHandler( async(req, res) => {
   const currentSet = await getSetByIdDB(req.params.id)
-  console.log({currentSet})
     const newSet = {
     weight: req.body.weight || currentSet.weight,
     reps: req.body.reps || currentSet.reps
