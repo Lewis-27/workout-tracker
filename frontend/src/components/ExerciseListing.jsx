@@ -6,8 +6,8 @@ import {
   CardTitle,
   CardDescription,
   CardAction
- } from '@/components/ui/card'
- import { 
+} from '@/components/ui/card'
+import { 
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -18,13 +18,13 @@ import {
   AlertDialogAction,
   AlertDialogCancel
 } from './ui/alert-dialog'
- import { Button } from './ui/button'
- import { Spinner } from './ui/spinner'
- import { SquarePen, Save } from 'lucide-react'
- import { Link } from 'react-router-dom'
- import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
- import axios from 'axios'
- import SetInfo from './SetInfo'
+import { Button } from './ui/button'
+import { Spinner } from './ui/spinner'
+import { SquarePen, Save } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
+import SetInfo from './SetInfo'
 import { Input } from './ui/input'
 import { Field, FieldDescription, FieldLabel } from './ui/field'
 
@@ -88,7 +88,7 @@ const ExerciseListing = ({ exercise }) => {
   })
 
   return (
-    <Card variant='outline'>
+    <Card variant='outline' className={'w-80 min-h-80'}>
       <CardHeader>
         {editingDetails ? <>
           <CardTitle>
@@ -144,7 +144,7 @@ const ExerciseListing = ({ exercise }) => {
                   <Button 
                     variant='destructive' 
                     className={'w-full'}
-                  >Delete Workout</Button> 
+                  >Delete Exercise</Button> 
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
@@ -162,7 +162,7 @@ const ExerciseListing = ({ exercise }) => {
                     variant='destructive' 
                     className={'bg-red-500'}
                     onClick={(e) => deleteExerciseMutation.mutate()}
-                  >Delete Workout</Button> 
+                  >Delete Exercise</Button> 
                     </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>

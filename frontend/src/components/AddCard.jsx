@@ -28,7 +28,7 @@ const AddCard = ({workoutId}) => {
   })
   
   return (
-    <Card variant='outline' className='h-full min-h-80 hover:cursor-pointer' onClick={() => addBlankExerciseMutation.mutate()}>
+    <Card variant='outline' className='h-full min-h-80 w-80 hover:cursor-pointer' onClick={() => addBlankExerciseMutation.mutate()}>
       <CardHeader>
         <CardTitle>Add Exercise</CardTitle>
       </CardHeader>

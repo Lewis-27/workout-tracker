@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   NavigationMenu,
@@ -14,10 +14,24 @@ import { useUserStore } from '@/stores/userStore'
 
 const Header = () => {
   const user = useUserStore((state) => state.user)
+  const [scrolled, setScrolled] = useState(false)
+
+  document.addEventListener('scroll', (e) => {
+    if(window.scrollY > 0){
+      setScrolled(true)
+    } else {
+      setScrolled(false)
+    }
+  })
+
+
   return (
-    <div className="p-4 lg:px-32 xl:px-64 sticky-top flex flex-row items-center justify-between">
+    <div id='nav' className="px-4 lg:px-32 xl:px-32 top-0 left-0 sticky">
+    <div className={scrolled 
+        ? "p-4 top-0 left-0 flex flex-row items-center justify-between bg-white shadow border border-gray-200 rounded-b-xl " 
+        : "p-4 top-0 left-0 flex flex-row items-center justify-between  rounded-b-xl"}>
       <Link to={'/'}>
-        <Button variant='ghost'>Workout Tracker</Button>
+        <Button variant='secondary'>Workout Tracker</Button>
       </Link>
       {user.name
         ? <NavigationMenu >
@@ -55,7 +69,7 @@ const Header = () => {
       
 
     </div>
-
+    </div>
   )
 }
 

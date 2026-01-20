@@ -56,7 +56,7 @@ useEffect(() => {
             <ItemContent>{set.weight}</ItemContent>
           </Item>  */}
           <Input 
-            className={'w-12 h-12 text-center'} 
+            className={'w-16 h-12 text-center'} 
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
           />
@@ -68,7 +68,7 @@ useEffect(() => {
             <ItemContent>{set.reps}</ItemContent>
           </Item>  */}
           <Input 
-            className={'w-12 h-12 text-center'}
+            className={'w-14 h-12 text-center'}
             value={reps}
             onChange={(e) => setReps(e.target.value)}
           />
