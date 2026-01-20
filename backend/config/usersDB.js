@@ -40,7 +40,7 @@ const registerUserDB = async (user) => {
     ...user,
     password : await hashPassword(user.password)
   }
-  const res = await pool.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING name, email, password', [user.name, user.email, hashedUser.password])
+  const res = await pool.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING id,  name, email, password', [user.name, user.email, hashedUser.password])
   return res.rows[0]
 }
 
@@ -71,7 +71,7 @@ const updateUserProfileDB = async (userId, newDetails) => {
   }
   try {
     await pool.query('BEGIN');
-    const queryText = 'UPDATE users SET name=$2, email=$3, password=$4 WHERE id=$1 RETURNING *'
+    const queryText = 'UPDATE users SET name=$2, email=$3, password=$4 WHERE id=$1 RETURNING id, name, email'
     const queryValues = [userId, updatedDetails.name, updatedDetails.email, updatedDetails.password]
     const updatedUser = await pool.query(queryText, queryValues)
     await pool.query('COMMIT')

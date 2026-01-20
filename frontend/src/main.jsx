@@ -12,6 +12,7 @@ import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import LogoutPage from './pages/LogoutPage'
 import WorkoutPage from './pages/WorkoutPage'
+import EditProfilePage from './pages/EditProfilePage'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path='/signup' element={<SignupPage />} />
       <Route path='/logout' element={<LogoutPage />} />
       <Route path='/workout/:id' element={<WorkoutPage />} />
+      <Route path='/editProfile' element={<EditProfilePage />} />
     </Route>
   )
 )

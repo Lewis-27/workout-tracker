@@ -33,7 +33,7 @@ const Header = () => {
       <Link to={'/'}>
         <Button variant='secondary'>Workout Tracker</Button>
       </Link>
-      {user.name
+      {user && user.name
         ? <NavigationMenu >
             <NavigationMenuList >
               <NavigationMenuItem >
