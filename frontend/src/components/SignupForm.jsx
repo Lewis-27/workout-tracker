@@ -27,8 +27,12 @@ const SignupForm = () => {
 
   const signupMutation = useMutation({
     mutationFn: async (newUser) => {
-      const res = await axios.post('/api/users', newUser)
-      return res.data
+      try {
+        const res = await axios.post('/api/users', newUser)
+        return res.data
+      } catch (error) {
+        toast.error(`Error: ${error.response.data.message}`)
+      }
     }
   })
 
@@ -37,15 +41,17 @@ const SignupForm = () => {
     try {
       await signupMutation.mutateAsync({name, email, password})
     } catch (error) {
-      
+
     }
   }
 
   useEffect(() => {
     if(signupMutation.status === 'success') {
-      updateUserDetails(signupMutation.data)
-      localStorage.setItem('userInfo', JSON.stringify(signupMutation.data))
-      navigate('/')
+      if(signupMutation.data){
+        updateUserDetails(signupMutation.data)
+        localStorage.setItem('userInfo', JSON.stringify(signupMutation.data))
+        navigate('/')
+      }
     } else if (signupMutation.status === 'error') {
       toast.error('Failed to create account')
     }

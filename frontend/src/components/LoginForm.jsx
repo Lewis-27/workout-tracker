@@ -36,15 +36,23 @@ const LoginForm = () => {
 
   const loginMutation = useMutation({
     mutationFn: async (enteredDetails) => {
-      return await axios.post('/api/users/auth', enteredDetails, {withCredentials: true})
+      try {
+        const res = await axios.post('/api/users/auth', enteredDetails, {withCredentials: true})
+        return res.data
+      } catch (error) {
+        toast.error(error.response.data.message)
+      }
     }
   })
 
   useEffect(() => {
     if(loginMutation.status === 'success'){
-        updateUserDetails(loginMutation.data.data)
-        localStorage.setItem('userInfo', JSON.stringify(loginMutation.data.data))  
+      if(loginMutation.data){
+        updateUserDetails(loginMutation.data)
+        localStorage.setItem('userInfo', JSON.stringify(loginMutation.data))  
         navigate('/')
+      }
+        
     } else if(loginMutation.status === 'error') {
       toast.error('Failed to log in')
     }

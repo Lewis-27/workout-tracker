@@ -13,6 +13,7 @@ import SignupPage from './pages/SignupPage'
 import LogoutPage from './pages/LogoutPage'
 import WorkoutPage from './pages/WorkoutPage'
 import EditProfilePage from './pages/EditProfilePage'
+import NotFoundPage from './pages/NotFoundPage'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route path='/logout' element={<LogoutPage />} />
       <Route path='/workout/:id' element={<WorkoutPage />} />
       <Route path='/editProfile' element={<EditProfilePage />} />
+      <Route path='/*' element={<NotFoundPage />} />
     </Route>
   )
 )

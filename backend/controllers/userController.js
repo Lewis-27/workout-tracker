@@ -10,24 +10,19 @@ import generateToken from "../utils/generateToken.js";
 const authUser = asyncHandler(async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  try {
+    const response = await authUserDB(email, password)
+    if(response){
+      generateToken(res, response.id)
+      res.status(200).send(response);
+    } else {
+      throw new Error('Incorrect email or password')
+    }
 
-  const response = await authUserDB(email, password)
-
-  if(response){
-    generateToken(res, response.id)
-    res.status(200).send(response);
-  } else {
-    res.status(400).send('Not authorised')
+  } catch (error) {
+    throw error
   }
-
-  res.status(200).send(response)
-  // const user = await getUserByEmailDB(email);
-  // console.log(user)
-  // if(user && (user.password === password)) {
-  //   res.status(200).send('User authorised')
-  // } else {
-  //   res.status(400).send('Invalid details')
-  // }
+  
 })
 
 //@desc Register user
@@ -35,6 +30,10 @@ const authUser = asyncHandler(async (req, res) => {
 //@access public
 const registerUser = asyncHandler(async (req, res) => {
   try {
+    const existingUser = await getUserByEmailDB(req.body.email)
+    if(existingUser){
+      throw new Error('Email already in use')
+    }
     const user = {
     name: req.body.name,
     email: req.body.email,
