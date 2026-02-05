@@ -96,3 +96,45 @@ Each of these tables also have a field for time created, this is used later in t
 It is necessary to carry out error handling for each of the SQL queries as disconnection from the server or invalid requests can throw errors which must be handled accordingly. 
 
 In this case I used `try catch` statements to catch errors. The response status is then updated to reflect the error state and an error is thrown with an intelligible message such as `Could not find workout` or `Invalid credentials`
+
+### Frontend
+
+For the frontend of the project I used React. The contents of the page are structured and styled using `shadcn` and `tailwindcss`. For routing between pages I used the package `react-router-dom`. I used a combination of `axios` and `tanstack-query` to fetch data from the backend API and I used the state manager `zustand` to store the user details in a global state store.
+
+**Structure**
+
+Each endpoint for the site such as `/`, `/login` and `/workout/1` uses the react router to render a React component which acts as the desired page such as the home page, login/logout page, signup page and individual pages for each workout.
+
+The contents of each page is then made up of further React components such as the header, forms for signing up and logging in and cards representing workouts, exercises and sets.
+
+These components (such as buttons, cards, inputs and spinners) are themselves made from components from the ShadCN component library styled using tailwind classes. This helps to give the website a consistent style while also maintaining structure and efficiency as code can be reused throughout the project.
+
+**Data Handling**
+
+In order to populate the page with data and allow the user to interact with the data it is necessary to interact with the backend API I created.
+
+By setting up a proxy in the vite settings for react, you can send HTTP requests from within the react application to endpoints such as `POST /api/users` to carry out this interaction.
+
+I used the library `axios` to perform these specific fetch requests by supplying a method, endpoint and body. 
+
+In order to facilitate these queries I used the library `Tanstack Query`. This library allows me to call a fetch request while monitoring the state of the request (pending, error, success) and handle the data it returns correctly. 
+
+Part of handling the data is ensuring that if a change is made to the backend data such as adding a workout or changing a user's name, the data on the frontend is reloaded as needed to ensure only the most up to date data is rendered for the user.
+
+Tanstack Query works by declaring a query/mutation function with instructions on what axios request to make (including what endpoint and body data to use) and how to handle the data that is returned. This query/mutation function is then called within the react component either as part of rendering the page in the case of data fetching, or as a response to a user action in the case of a data mutation.
+
+Data that may be used throughout the application such as the data of the currently logged in user is stored in a global state store using the `zustand` library.
+
+I declared a state object to hold the currently logged in user using zustand's store feature which is set to the data returned when a user successfully logs in and then is updated/removed when a user edits their data or logs out.
+
+This user data is then used for things such as populating the header with the user's name.
+
+**Frontend Error Handling**
+
+There are a number of errors that can be presented to users as they navigate the site. One simple error is navigating to an endpoint with no designated page to render. In this case I created a fallback page that informs the user that the page they attempted to go to does not exist and allows them to navigate either to the previous page or the home page.
+
+The main source of errors for the user comes with interacting with the backend. 
+
+The use of Tanstack Query allows me to monitor requests for if they enter into error states, in this case I can relay this info back to the user using toasts.
+
+These toasts contain messages, that inform the user of the nature of the error such as 'Error fetching workouts' or 'Failed to authorise user' allowing the user to retry whatever action caused the error.
