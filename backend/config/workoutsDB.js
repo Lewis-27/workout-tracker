@@ -5,12 +5,16 @@ dotenv.config()
 
 const { Pool, Client } = pg;
 
+// const pool = new Pool({
+//   user: process.env.PG_USER,
+//   password: process.env.PG_PASSWORD,
+//   host: process.env.PG_HOST,
+//   port: process.env.PG_PORT,
+//   database: process.env.PG_DATABASE
+// })
+const connectionString = process.env.DB_CONNECTION_URI
 const pool = new Pool({
-  user: process.env.PG_USER,
-  password: process.env.PG_PASSWORD,
-  host: process.env.PG_HOST,
-  port: process.env.PG_PORT,
-  database: process.env.PG_DATABASE
+  connectionString
 })
 
 const getUserWorkoutsDB = async(userId) => {
