@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { 
+import {
   Card,
   CardContent,
   CardHeader,
@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardAction
 } from '@/components/ui/card'
-import { 
+import {
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -44,7 +44,7 @@ const ExerciseListing = ({ exercise }) => {
     return res.data
   }
 
-  const {isPending, isError, data, error } = useQuery({
+  const { isPending, isError, data, error } = useQuery({
     queryKey: ['sets', exercise.id],
     queryFn: fetchSets
   })
@@ -94,25 +94,25 @@ const ExerciseListing = ({ exercise }) => {
           <CardTitle>
             <Field>
               <FieldLabel>Exercise Name</FieldLabel>
-              <Input 
-                value={ exerciseName }
+              <Input
+                value={exerciseName}
                 onChange={(e) => setExerciseName(e.target.value)}
               />
             </Field>
-            </CardTitle>
+          </CardTitle>
           <CardDescription className={'text-gray-500'}>
             <Field className={'mt-2'}>
               <FieldLabel>Muscle Group</FieldLabel>
-              <Input 
-                value={ muscleGroup }
+              <Input
+                value={muscleGroup}
                 onChange={(e) => setMuscleGroup(e.target.value)}
               />
             </Field>
-            
+
           </CardDescription>
           <CardAction>
-            <Button 
-              variant='ghost' 
+            <Button
+              variant='ghost'
               onClick={() => {
                 updatedExerciseDetailsMutation.mutate()
                 setEditingDetails(!editingDetails)
@@ -121,58 +121,58 @@ const ExerciseListing = ({ exercise }) => {
               <Save />
             </Button>
           </CardAction>
-        </> 
-        : <>
-          <CardTitle>{ exerciseName}</CardTitle>
-          <CardDescription className={'text-gray-500'}>{ muscleGroup }</CardDescription>
-          <CardAction >
-            <Button 
-              variant='ghost' 
-              onClick={() => setEditingDetails(!editingDetails)}
-            >
-              <SquarePen />
-            </Button>
-          </CardAction>
-        </>}
+        </>
+          : <>
+            <CardTitle>{exerciseName}</CardTitle>
+            <CardDescription className={'text-gray-500'}>{muscleGroup}</CardDescription>
+            <CardAction >
+              <Button
+                variant='ghost'
+                onClick={() => setEditingDetails(!editingDetails)}
+              >
+                <SquarePen />
+              </Button>
+            </CardAction>
+          </>}
       </CardHeader>
       <CardContent>
-        {isPending ? <Spinner></Spinner> : <div className="flex flex-col gap-4">
-          {sets.map((set) => <SetInfo key={set.id} set={set}/>)}
-            {editingDetails 
-              ? <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button 
-                    variant='destructive' 
-                    className={'w-full'}
-                  >Delete Exercise</Button> 
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Delete Workout?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to delete this exercises and all its sets? This action cannot be undone
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                      <Button 
-                    variant='destructive' 
-                    className={'bg-red-500'}
-                    onClick={(e) => deleteExerciseMutation.mutate()}
-                  >Delete Exercise</Button> 
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog> 
-            : <Button 
-              variant='outline' 
+        {isPending ? <Spinner className='m-auto my-[40px] size-16'></Spinner> : <div className="flex flex-col gap-4">
+          {sets.map((set) => <SetInfo key={set.id} set={set} />)}
+          {editingDetails
+            ? <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant='destructive'
+                  className={'w-full'}
+                >Delete Exercise</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Delete Workout?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to delete this exercises and all its sets? This action cannot be undone
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction asChild>
+                    <Button
+                      variant='destructive'
+                      className={'bg-red-500'}
+                      onClick={(e) => deleteExerciseMutation.mutate()}
+                    >Delete Exercise</Button>
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+            : <Button
+              variant='outline'
               className={'w-full'}
               onClick={(e) => addSetMutation.mutate()}
-            >Add Set</Button>  }
-        </div> }
+            >Add Set</Button>}
+        </div>}
       </CardContent>
     </Card>
   )

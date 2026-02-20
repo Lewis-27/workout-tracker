@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Spinner } from '@/components/ui/spinner'
-import { 
+import {
   Card,
   CardHeader,
   CardTitle,
@@ -13,7 +13,7 @@ import {
   CardFooter,
   CardAction
 } from '@/components/ui/card'
-import { 
+import {
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -24,10 +24,10 @@ import {
   AlertDialogAction,
   AlertDialogCancel
 } from '@/components/ui/alert-dialog'
- import { Input } from '@/components/ui/input'
- import { Button } from '@/components/ui/button'
- import ExerciseListing from '@/components/ExerciseListing'
- import AddCard from '@/components/AddCard'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import ExerciseListing from '@/components/ExerciseListing'
+import AddCard from '@/components/AddCard'
 import { SquarePen, Save, Trash } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -38,19 +38,19 @@ const WorkoutPage = () => {
   const { id } = useParams()
   const [workout, setWorkout] = useState({})
   const [exercises, setExercises] = useState([])
-  
+
   const [editingDetails, setEditingDetails] = useState(false)
   const [workoutName, setWorkoutName] = useState('')
 
   const queryClient = useQueryClient()
-  
+
   const fetchWorkout = async () => {
     const res = await axios.get(`/api/workouts/${id}`)
     setWorkout(res.data)
     setWorkoutName(res.data.workout_name)
     return res.data
   }
-  
+
   const fetchWorkoutQuery = useQuery({
     queryKey: ['workouts', id],
     queryFn: fetchWorkout
@@ -68,7 +68,7 @@ const WorkoutPage = () => {
   })
 
   const updateWorkoutDetails = async () => {
-    const res = await axios.put(`/api/workouts/${id}`,{
+    const res = await axios.put(`/api/workouts/${id}`, {
       name: workoutName
     })
     queryClient.invalidateQueries()
@@ -91,7 +91,7 @@ const WorkoutPage = () => {
   })
 
   useEffect(() => {
-    if(workout.workout_name !== workoutName && workoutName !== ''){
+    if (workout.workout_name !== workoutName && workoutName !== '') {
       updateWorkoutDetailsMutation.mutate()
     }
   }, [editingDetails])
@@ -101,16 +101,16 @@ const WorkoutPage = () => {
       <Card className='px-2 '>
         <CardHeader className='text-center'>
           <CardTitle>
-            {editingDetails 
+            {editingDetails
               ? <div className="flex items-center justify-center gap-2">
-                  <Input 
-                    className='w-1/4' 
-                    value={workoutName}
-                    onChange={(e) => setWorkoutName(e.target.value)}
-                  />
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild><Button variant='destructive' size='sm'><Trash /></Button></AlertDialogTrigger>
-                    <AlertDialogContent>
+                <Input
+                  className='w-1/4'
+                  value={workoutName}
+                  onChange={(e) => setWorkoutName(e.target.value)}
+                />
+                <AlertDialog>
+                  <AlertDialogTrigger asChild><Button variant='destructive' size='sm'><Trash /></Button></AlertDialogTrigger>
+                  <AlertDialogContent>
                     <AlertDialogHeader>
                       <AlertDialogTitle>Delete Workout?</AlertDialogTitle>
                       <AlertDialogDescription>Are you sure you want to delete this workout and all its exercises? This action cannot be undone</AlertDialogDescription>
@@ -120,37 +120,37 @@ const WorkoutPage = () => {
                       <AlertDialogAction onClick={(e) => deleteWorkoutMutation.mutate()}>Delete</AlertDialogAction>
                     </AlertDialogFooter>
 
-                    </AlertDialogContent>
-                  </AlertDialog>
-                  
-                </div>
+                  </AlertDialogContent>
+                </AlertDialog>
+
+              </div>
               : <>{workout.workout_name}</>
             }
-            
+
           </CardTitle>
           <CardAction>
-            <Button variant='ghost' size='sm'  onClick={(e) => setEditingDetails(!editingDetails)}>
-              {editingDetails ?  <Save /> : <SquarePen />}
+            <Button variant='ghost' size='sm' onClick={(e) => setEditingDetails(!editingDetails)}>
+              {editingDetails ? <Save /> : <SquarePen />}
             </Button>
           </CardAction>
         </CardHeader>
         <CardContent className={'flex items-center justify-center'}>
-          {isPending ? <Spinner></Spinner> : 
+          {isPending ? <Spinner className='size-16 w-100 md:w-150 lg:w-200 '></Spinner> :
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
               {exercises && !isPending
-                ? <>{exercises.length !== 0 
-                  ? <>{exercises.map((exercise) => <ExerciseListing key={exercise.id} exercise={exercise} /> )}</> 
+                ? <>{exercises.length !== 0
+                  ? <>{exercises.map((exercise) => <ExerciseListing key={exercise.id} exercise={exercise} />)}</>
                   : <></>}
-                  </>
+                </>
                 : null
               }
-              
-              <AddCard workoutId={id}/>
+
+              <AddCard workoutId={id} />
             </div>
           }
-          
+
         </CardContent>
-      </Card>      
+      </Card>
     </div>
 
   )

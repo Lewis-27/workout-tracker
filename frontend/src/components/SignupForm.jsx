@@ -39,15 +39,15 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await signupMutation.mutateAsync({name, email, password})
+      await signupMutation.mutateAsync({ name, email, password })
     } catch (error) {
 
     }
   }
 
   useEffect(() => {
-    if(signupMutation.status === 'success') {
-      if(signupMutation.data){
+    if (signupMutation.status === 'success') {
+      if (signupMutation.data) {
         updateUserDetails(signupMutation.data)
         localStorage.setItem('userInfo', JSON.stringify(signupMutation.data))
         navigate('/')
@@ -59,46 +59,46 @@ const SignupForm = () => {
 
   return (
     <div className='w-100 '>
-      {signupMutation.status === 'pending' ? <Spinner className={'size-16'}></Spinner> : 
-      <form action="" onSubmit={handleSubmit}>      
-        <FieldSet>
-          <FieldGroup>
-            <Field>
-              <FieldLabel htmlFor='name'>Name</FieldLabel>
-                <Input 
-                  id='name' 
-                  placeholder='Joe Blogs' 
+      {signupMutation.status === 'pending' ? <Spinner className={'size-16 m-auto'}></Spinner> :
+        <form action="" onSubmit={handleSubmit}>
+          <FieldSet>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor='name'>Name</FieldLabel>
+                <Input
+                  id='name'
+                  placeholder='Joe Blogs'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor='email'>Email</FieldLabel>
-              <Input 
-                id='email' 
-                placeholder='example@mail.com' 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
                 />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor='password'>Password</FieldLabel>
-              <Input 
-                id='password' 
-                type='password' 
-                placeholder='••••••••••'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+              </Field>
+              <Field>
+                <FieldLabel htmlFor='email'>Email</FieldLabel>
+                <Input
+                  id='email'
+                  placeholder='example@mail.com'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
                 />
-            </Field>
-            <Field>
-              <Button type='submit'>Sign Up</Button>
-            </Field>
-          </FieldGroup>
-        </FieldSet>
-      </form> }
+              </Field>
+              <Field>
+                <FieldLabel htmlFor='password'>Password</FieldLabel>
+                <Input
+                  id='password'
+                  type='password'
+                  placeholder='••••••••••'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Field>
+              <Field>
+                <Button type='submit'>Sign Up</Button>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
+        </form>}
     </div>
   )
 }

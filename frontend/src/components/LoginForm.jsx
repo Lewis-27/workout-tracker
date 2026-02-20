@@ -29,7 +29,7 @@ const LoginForm = () => {
   const updateUserDetails = useUserStore((state) => state.updateUserDetails)
 
   useEffect(() => {
-    if(localStorage.userInfo){
+    if (localStorage.userInfo) {
       navigate('/')
     }
   }, [])
@@ -37,7 +37,7 @@ const LoginForm = () => {
   const loginMutation = useMutation({
     mutationFn: async (enteredDetails) => {
       try {
-        const res = await axios.post('/api/users/auth', enteredDetails, {withCredentials: true})
+        const res = await axios.post('/api/users/auth', enteredDetails, { withCredentials: true })
         return res.data
       } catch (error) {
         toast.error(error.response.data.message)
@@ -46,14 +46,14 @@ const LoginForm = () => {
   })
 
   useEffect(() => {
-    if(loginMutation.status === 'success'){
-      if(loginMutation.data){
+    if (loginMutation.status === 'success') {
+      if (loginMutation.data) {
         updateUserDetails(loginMutation.data)
-        localStorage.setItem('userInfo', JSON.stringify(loginMutation.data))  
+        localStorage.setItem('userInfo', JSON.stringify(loginMutation.data))
         navigate('/')
       }
-        
-    } else if(loginMutation.status === 'error') {
+
+    } else if (loginMutation.status === 'error') {
       toast.error('Failed to log in')
     }
   }, [loginMutation.status])
@@ -63,46 +63,46 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await loginMutation.mutateAsync({email,password})
+      await loginMutation.mutateAsync({ email, password })
     } catch (error) {
-      
+
     }
 
   }
 
   return (
     <div className='w-100 '>
-      {loginMutation.status === 'pending' ?<Spinner className={'size-16'}></Spinner>  : 
-      <form id='loginForm' onSubmit={handleSubmit}>
-        <FieldSet >
-          <FieldGroup>
-            <Field>
-              <FieldLabel htmlFor='email'>Email</FieldLabel>
-              <Input 
-                id='email' 
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder='joe@mail.com' 
-                required
-              />
-            </Field>
-            <Field>
-              <FieldLabel htmlFor='password'>Password</FieldLabel>
-              <Input 
-                id='password' 
-                type='password' 
-                value={password} 
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder='••••••••••'
-                required
-              />
-            </Field>
-            <Field >
-              <Button type='submit'>Log In</Button>
-            </Field>
-          </FieldGroup>
-        </FieldSet>        
-      </form>}
+      {loginMutation.status === 'pending' ? <Spinner className={'size-16 m-auto'}></Spinner> :
+        <form id='loginForm' onSubmit={handleSubmit}>
+          <FieldSet >
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor='email'>Email</FieldLabel>
+                <Input
+                  id='email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder='joe@mail.com'
+                  required
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor='password'>Password</FieldLabel>
+                <Input
+                  id='password'
+                  type='password'
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder='••••••••••'
+                  required
+                />
+              </Field>
+              <Field >
+                <Button type='submit'>Log In</Button>
+              </Field>
+            </FieldGroup>
+          </FieldSet>
+        </form>}
 
     </div>
   )

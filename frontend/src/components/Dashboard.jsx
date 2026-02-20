@@ -32,7 +32,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className='w-full h-150 flex flex-col gap-4 items-start justify-start lg:px-64 xl:px-128'>
+    <div className='w-full px-2 h-150 flex flex-col gap-4 items-start justify-start md:px-24 lg:px-32 '>
       <Card className={'w-full'}>
         <CardHeader>
           <CardTitle><h1 className=' text-center text-xl'>My Workouts</h1>
@@ -40,7 +40,8 @@ const Dashboard = () => {
         </CardHeader>
         <CardContent className={'min-h-16'}>
 
-          {fetchWorkoutsQuery.isPending ? <div className="flex items-center justify-center"><Spinner className={'size-8'}></Spinner></div> : <div className="">
+          {fetchWorkoutsQuery.isPending ? <div className="flex items-center justify-center"><Spinner className={'size-16 my-28'}></Spinner></div> : <div className="">
+
             {fetchWorkoutsQuery.isError ? console.log('error workouts') : console.log('workouts fetched')}
             {workouts && workouts !== 0
               ? <div className="flex flex-col gap-6">
