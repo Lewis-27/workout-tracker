@@ -3,16 +3,16 @@ import { useUserStore } from '@/stores/userStore'
 import { useWorkoutStore } from '@/stores/workoutStore'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { 
+import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
   CardDescription,
- } from './ui/card'
- import { Spinner } from './ui/spinner'
- import WorkoutListing from './WorkoutListing'
- import AddWorkoutItem from './AddWorkoutItem'
+} from './ui/card'
+import { Spinner } from './ui/spinner'
+import WorkoutListing from './WorkoutListing'
+import AddWorkoutItem from './AddWorkoutItem'
 
 const Dashboard = () => {
   const user = useUserStore((state) => state.user)
@@ -39,18 +39,19 @@ const Dashboard = () => {
           </CardTitle>
         </CardHeader>
         <CardContent className={'min-h-16'}>
-          
-          {fetchWorkoutsQuery.isPending ? <div className="flex items-center justify-center"><Spinner className={'size-8'}></Spinner></div> : <div className="">
 
-          {workouts !== 0
-            ? <div className="flex flex-col gap-6">
+          {fetchWorkoutsQuery.isPending ? <div className="flex items-center justify-center"><Spinner className={'size-8'}></Spinner></div> : <div className="">
+            {fetchWorkoutsQuery.isError ? console.log('error workouts') : console.log('workouts fetched')}
+            {workouts && workouts !== 0
+              ? <div className="flex flex-col gap-6">
+                {console.log({ workouts })}
                 {workouts.map((workout) => {
                   return <WorkoutListing key={workout.id} workout={workout} />
                 })}
-                <AddWorkoutItem onClick={(e) => console.log('click')}/>
-              </div> 
-            : <div className="">No Workouts Found</div> }
-            </div>}
+                <AddWorkoutItem onClick={(e) => console.log('click')} />
+              </div>
+              : <div className="">No Workouts Found</div>}
+          </div>}
         </CardContent>
       </Card>
     </div>
