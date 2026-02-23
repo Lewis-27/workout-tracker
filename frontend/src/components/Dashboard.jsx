@@ -41,15 +41,12 @@ const Dashboard = () => {
         <CardContent className={'min-h-16'}>
 
           {fetchWorkoutsQuery.isPending ? <div className="flex items-center justify-center"><Spinner className={'size-16 my-28'}></Spinner></div> : <div className="">
-
-            {fetchWorkoutsQuery.isError ? console.log('error workouts') : console.log('workouts fetched')}
             {workouts && workouts !== 0
               ? <div className="flex flex-col gap-6">
-                {console.log({ workouts })}
                 {workouts.map((workout) => {
                   return <WorkoutListing key={workout.id} workout={workout} />
                 })}
-                <AddWorkoutItem onClick={(e) => console.log('click')} />
+                <AddWorkoutItem />
               </div>
               : <div className="">No Workouts Found</div>}
           </div>}

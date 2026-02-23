@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react'
-import { 
+import { useEffect, useState } from 'react'
+import {
   Card,
   CardHeader,
   CardTitle,
@@ -8,13 +8,13 @@ import {
   CardDescription,
   CardAction
 } from '@/components/ui/card'
-import { 
+import {
   Field,
   FieldSet,
   FieldTitle,
   FieldContent
 } from '@/components/ui/field'
-import { 
+import {
   AlertDialog,
   AlertDialogTrigger,
   AlertDialogContent,
@@ -45,7 +45,6 @@ const EditProfilePage = () => {
 
   const updateUserDetails = async (newDetails) => {
     const res = await axios.put(`/api/users/profile`, newDetails)
-    console.log(res)
     queryClient.invalidateQueries()
     navigate('/')
     return res.data
@@ -68,7 +67,7 @@ const EditProfilePage = () => {
 
   const handleSave = () => {
     let newDetails = {}
-    if(password !== ''){
+    if (password !== '') {
       newDetails = {
         name,
         email,
@@ -84,7 +83,7 @@ const EditProfilePage = () => {
     // updateSavedUser(updatedDetails)
   }
   useEffect(() => {
-    if(updateUserDetailsMutation.status === 'success'){
+    if (updateUserDetailsMutation.status === 'success') {
       updateSavedUser(updateUserDetailsMutation.data)
       localStorage.setItem('userInfo', JSON.stringify(updateUserDetailsMutation.data))
     }
@@ -104,7 +103,7 @@ const EditProfilePage = () => {
                 Name
               </FieldTitle>
               <FieldContent>
-                <Input 
+                <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -115,7 +114,7 @@ const EditProfilePage = () => {
                 Email
               </FieldTitle>
               <FieldContent>
-                <Input 
+                <Input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -126,7 +125,7 @@ const EditProfilePage = () => {
                 Password
               </FieldTitle>
               <FieldContent>
-                <Input 
+                <Input
                   value={password}
                   type={'password'}
                   onChange={(e) => setPassword(e.target.value)}

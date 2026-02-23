@@ -1,6 +1,7 @@
 import pg from 'pg';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
+import { getSecret } from '../utils/getSecret.js';
 
 dotenv.config()
 
@@ -13,10 +14,12 @@ const { Pool, Client } = pg;
 //   port: process.env.PG_PORT,
 //   database: process.env.PG_DATABASE
 // })
-const connectionString = process.env.DB_CONNECTION_URI
+const connectionString = getSecret('db_secret')
+
 const pool = new Pool({
   connectionString
 })
+
 
 const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(10);
@@ -42,7 +45,7 @@ const getUserByIdDB = async (id) => {
 const registerUserDB = async (user) => {
   const hashedUser = {
     ...user,
-    password : await hashPassword(user.password)
+    password: await hashPassword(user.password)
   }
   const res = await pool.query('INSERT INTO users(name, email, password) VALUES($1, $2, $3) RETURNING id,  name, email, password', [user.name, user.email, hashedUser.password])
   return res.rows[0]
@@ -52,7 +55,7 @@ const authUserDB = async (email, password) => {
   try {
     const user = await getUserByEmailDB(email)
     const passwordDB = user.password
-    if(await bcrypt.compare(password, passwordDB)){
+    if (await bcrypt.compare(password, passwordDB)) {
       return {
         id: user.id,
         email: user.email,
@@ -71,7 +74,7 @@ const updateUserProfileDB = async (userId, newDetails) => {
   const updatedDetails = {
     name: newDetails.name || currentDetails.name,
     email: newDetails.email || currentDetails.email,
-    password: newDetails.password ? await(hashPassword(newDetails.password)) : currentDetails.password
+    password: newDetails.password ? await (hashPassword(newDetails.password)) : currentDetails.password
   }
   try {
     await pool.query('BEGIN');
@@ -89,11 +92,11 @@ const updateUserProfileDB = async (userId, newDetails) => {
 const deleteUserDB = async (userId) => {
   try {
     const deletedUser = await pool.query('DELETE FROM users WHERE id=$1 RETURNING *', [userId])
-    return deletedUser.rows[0]  
+    return deletedUser.rows[0]
   } catch (error) {
     throw new Error('Error deleting user')
   }
-  
+
 }
 
 

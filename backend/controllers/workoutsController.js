@@ -4,7 +4,7 @@ import { getUserWorkoutsDB, getWorkoutByIdDB, addNewWorkoutDB, updateWorkoutDB, 
 //@desc GET /workouts
 //Get all of the user's workouts
 //@access private
-const getUserWorkouts = asyncHandler( async(req, res) => {
+const getUserWorkouts = asyncHandler(async (req, res) => {
   try {
     const workouts = await getUserWorkoutsDB(req.user.id)
     res.status(200).json(workouts)
@@ -17,18 +17,17 @@ const getUserWorkouts = asyncHandler( async(req, res) => {
 //@desc GET /workouts/:id
 //Get specific workout by ID
 //@access private
-const getWorkoutById = asyncHandler( async(req, res) => {
+const getWorkoutById = asyncHandler(async (req, res) => {
   try {
     const workout = await getWorkoutByIdDB(req.user.id, req.params.id)
-    if(workout) {
+    if (workout) {
       res.status(200).json(workout)
     } else {
       res.status(404)
       throw new Error('Could not find workout')
     }
   } catch (error) {
-    if(res.statusCode === 404){
-      console.log('err')
+    if (res.statusCode === 404) {
       throw error
     } else {
       res.status(400)
@@ -40,7 +39,7 @@ const getWorkoutById = asyncHandler( async(req, res) => {
 //@desc POST /workouts
 //Add new workout
 //@access private
-const addWorkout = asyncHandler( async(req, res) => {
+const addWorkout = asyncHandler(async (req, res) => {
   const workout = {
     owner: req.user.id,
     workout_name: req.body.name
@@ -51,48 +50,48 @@ const addWorkout = asyncHandler( async(req, res) => {
   } catch (error) {
     throw new Error('Error adding workout')
   }
-} )
+})
 
 //@desc PUT /workouts/:id
 //Update workout
 //@access private
-const updateWorkout = asyncHandler( async(req, res) => {
+const updateWorkout = asyncHandler(async (req, res) => {
   const newWorkout = {
     workout_name: req.body.name
   }
   try {
     const updatedWorkout = await updateWorkoutDB(req.params.id, newWorkout)
-    if(updatedWorkout){
-      res.status(200).send(updatedWorkout)    
+    if (updatedWorkout) {
+      res.status(200).send(updatedWorkout)
     } else {
       res.status(404)
       throw new Error('Could not find workout to update')
     }
   } catch (error) {
-      if(res.statusCode === 404){
-        throw error
-      } else {
-        res.status(400)
-        throw new Error('Error updating workout')
-      }
+    if (res.statusCode === 404) {
+      throw error
+    } else {
+      res.status(400)
+      throw new Error('Error updating workout')
+    }
   }
 
-} )
+})
 
 //@desc DELETE /workouts/:id
 //Delete specific workout
 //@access private
-const deleteWorkout = asyncHandler( async(req, res) => {
+const deleteWorkout = asyncHandler(async (req, res) => {
   try {
     const deletedWorkout = await deleteWorkoutDB(req.params.id)
-    if(deletedWorkout){
-      res.status(200).json(deletedWorkout)    
+    if (deletedWorkout) {
+      res.status(200).json(deletedWorkout)
     } else {
       res.status(404)
       throw new Error('Could not find workout to delete')
     }
   } catch (error) {
-    if(res.statusCode === 404) {
+    if (res.statusCode === 404) {
       throw error
     } else {
       res.status(400)
@@ -100,6 +99,6 @@ const deleteWorkout = asyncHandler( async(req, res) => {
     }
   }
 
-} )
+})
 
-export {getUserWorkouts, getWorkoutById, addWorkout, updateWorkout, deleteWorkout}
+export { getUserWorkouts, getWorkoutById, addWorkout, updateWorkout, deleteWorkout }
