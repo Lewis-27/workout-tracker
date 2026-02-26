@@ -1,6 +1,5 @@
 node_modules
 .env
-compose.yaml
 .dockerignore
 db_secret.txt
 jwt_secret.txt

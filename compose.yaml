@@ -1,0 +1,17 @@
+services:
+  production:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: 'production'
+      PORT: 5000
+    secrets:
+      - db_secret
+      - jwt_secret
+
+secrets:
+  db_secret:
+    file: db_secret.txt
+  jwt_secret:
+    file: jwt_secret.txt

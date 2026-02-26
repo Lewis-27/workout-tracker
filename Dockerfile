@@ -4,9 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN mkdir -p ./frontend
 
-RUN cd frontend && npm install && cd ..
+COPY /frontend/package*.json ./frontend
+
+RUN npm install
 
 COPY . .
 
@@ -14,4 +16,4 @@ EXPOSE 5000
 
 RUN npm run build
 
-CMD ["npm", "run", "server"]
+CMD ["npm", "run", "start"]
