@@ -14,7 +14,9 @@ const { Pool, Client } = pg;
 //   port: process.env.PG_PORT,
 //   database: process.env.PG_DATABASE
 // })
-const connectionString = getSecret('db_secret')
+const connectionString = process.env.DEPLOYMENT == 'railway'
+  ? process.env.DB_CONNCTION_URI
+  : getSecret('db_secret')
 
 const pool = new Pool({
   connectionString
