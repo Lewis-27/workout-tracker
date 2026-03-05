@@ -114,7 +114,9 @@ These components (such as buttons, cards, inputs and spinners) are themselves ma
 
 In order to populate the page with data and allow the user to interact with the data it is necessary to interact with the backend API I created.
 
-By setting up a proxy in the vite settings for react, you can send HTTP requests from within the react application to endpoints such as `POST /api/users` to carry out this interaction.
+For the purpose of development, by setting up a proxy in the vite settings for react, you can send HTTP requests from within the react application to endpoints such as `POST /api/users` to carry out this interaction.
+
+However in the production build of the app, the frontend is server as a static folder. As a result requests can still be made to the same endpoints without the need for a proxy server.
 
 I used the library `axios` to perform these specific fetch requests by supplying a method, endpoint and body. 
 
