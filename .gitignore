@@ -3,3 +3,4 @@ node_modules
 .dockerignore
 db_secret.txt
 jwt_secret.txt
+database-migration

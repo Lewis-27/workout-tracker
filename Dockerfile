@@ -4,16 +4,15 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN mkdir -p ./frontend
-
-COPY /frontend/package*.json ./frontend
+COPY package*.json ./frontend/
 
 RUN npm install
 
+RUN npm install --prefix frontend
+
 COPY . .
 
+ENV PORT=5000
 EXPOSE 5000
 
-RUN npm run build
-
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
