@@ -8,9 +8,10 @@ const protect = asyncHandler(async (req, res, next) => {
   token = req.cookies.jwt;
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.DEPLOYMENT == 'railway'
-        ? process.env.JWT_SECRET
-        : getSecret('jwt_secret'))
+      const decoded = jwt.verify(token, process.env.DEPLOYMENT == 'docker'
+        ? getSecret('jwt_secret')
+        : process.env.JWT_SECRET
+      )
       req.user = await getUserProfileByIdDB(decoded.userId)
       next()
     } catch (error) {

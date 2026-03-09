@@ -1,10 +1,13 @@
 import jwt from 'jsonwebtoken';
 import { getSecret } from './getSecret.js';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const generateToken = (res, userId) => {
-  const secret = process.env.DEPLOYMENT == 'railway'
-    ? process.env.JWT_SECRET
-    : getSecret('jwt_secret')
+  const secret = process.env.DEPLOYMENT == 'docker'
+    ? getSecret('jwt_secret')
+    : process.env.JWT_SECRET
   const token = jwt.sign({ userId }, secret, {
     expiresIn: '30d'
   })

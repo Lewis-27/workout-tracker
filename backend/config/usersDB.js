@@ -2,25 +2,12 @@ import pg from 'pg';
 import dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import { getSecret } from '../utils/getSecret.js';
+import { pool } from './db.js';
 
 dotenv.config()
 
 const { Pool, Client } = pg;
 
-// const pool = new Pool({
-//   user: process.env.PG_USER,
-//   password: process.env.PG_PASSWORD,
-//   host: process.env.PG_HOST,
-//   port: process.env.PG_PORT,
-//   database: process.env.PG_DATABASE
-// })
-const connectionString = process.env.DEPLOYMENT == 'railway'
-  ? process.env.DB_CONNECTION_URI
-  : getSecret('db_secret')
-
-const pool = new Pool({
-  connectionString
-})
 
 
 const hashPassword = async (password) => {
@@ -67,6 +54,7 @@ const authUserDB = async (email, password) => {
       return false
     }
   } catch (error) {
+    console.log(error)
     throw new Error('Failed to authorise user')
   }
 }

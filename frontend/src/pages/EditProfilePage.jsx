@@ -80,7 +80,6 @@ const EditProfilePage = () => {
       }
     }
     const updatedDetails = updateUserDetailsMutation.mutate(newDetails)
-    // updateSavedUser(updatedDetails)
   }
   useEffect(() => {
     if (updateUserDetailsMutation.status === 'success') {
