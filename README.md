@@ -1,5 +1,5 @@
 # Workout Tracker #
-**Link to project:**
+**Link to project:** https://workouts.lewis-miller.dev/
 
 Workout tracker is a simple web app that allows users to create workouts to represent a day at the gym. Users create individual workout templates such as 'Arm Day' or 'Push Day'. 
 Inside these workouts they can list exercises they will complete as part of the workout such as 'Curl' or 'Bench Press'. They can then add sets to the workout such as 12 repetitions at 10 kg.
@@ -24,6 +24,7 @@ FROM sets
 INNER JOIN exercises ON sets.exercise_id = exercises.id WHERE exercise_id=$1 
 ORDER BY sets.time_created ASC
 ```
+Once the database was working correctly locally I then migrated it to the cloud host Neon where the database could be accessed using a connection string.
 
 **Express Server**
 
@@ -113,7 +114,9 @@ These components (such as buttons, cards, inputs and spinners) are themselves ma
 
 In order to populate the page with data and allow the user to interact with the data it is necessary to interact with the backend API I created.
 
-By setting up a proxy in the vite settings for react, you can send HTTP requests from within the react application to endpoints such as `POST /api/users` to carry out this interaction.
+For the purpose of development, by setting up a proxy in the vite settings for react, you can send HTTP requests from within the react application to endpoints such as `POST /api/users` to carry out this interaction.
+
+However in the production build of the app, the frontend is server as a static folder. As a result requests can still be made to the same endpoints without the need for a proxy server.
 
 I used the library `axios` to perform these specific fetch requests by supplying a method, endpoint and body. 
 
@@ -138,3 +141,14 @@ The main source of errors for the user comes with interacting with the backend.
 The use of Tanstack Query allows me to monitor requests for if they enter into error states, in this case I can relay this info back to the user using toasts.
 
 These toasts contain messages, that inform the user of the nature of the error such as 'Error fetching workouts' or 'Failed to authorise user' allowing the user to retry whatever action caused the error.
+
+### Deployment
+Once I had completed the development of the site it was time to prepare it for deployment.
+
+In order to achieve this I removed the vite dev server and instead used the build command to turn the vite project into a static folder containing the files. I then changed the backend so that it served the static folder on endpoints such as `/login` so that the entire sit can be reached from the same port.
+
+I then used docker to containerise the project using a Dockerfile containing the build instructions and docker compose via the compose.yaml file to initialise the environment abnd build the container.
+
+Once the app could be successfully deployed from the container I then used the host railway to deploy the site from the GitHub repository. As a result of this the app is automatically redeployed whenever a change is push to the GitHub repo. As part of the deployment I had to feed the sensitive environment variables into railway such as the connection string for the database.
+
+I then attached the railway hosted site to the workouts.lewis-miller.dev subdomain of my website allowing the site to be public accessed.

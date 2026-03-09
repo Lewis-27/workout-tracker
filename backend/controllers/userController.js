@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler"
 import { registerUserDB, authUserDB, getUserByEmailDB, getUserByIdDB, updateUserProfileDB, deleteUserDB } from "../config/usersDB.js"
 
 import generateToken from "../utils/generateToken.js";
+import { getSecret } from "../utils/getSecret.js";
 
 //@desc Authorise user and create login token
 //route POST /api/users/auth
@@ -10,9 +11,10 @@ import generateToken from "../utils/generateToken.js";
 const authUser = asyncHandler(async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+
   try {
     const response = await authUserDB(email, password)
-    if(response){
+    if (response) {
       generateToken(res, response.id)
       res.status(200).send(response);
     } else {
@@ -22,7 +24,7 @@ const authUser = asyncHandler(async (req, res) => {
   } catch (error) {
     throw error
   }
-  
+
 })
 
 //@desc Register user
@@ -31,13 +33,13 @@ const authUser = asyncHandler(async (req, res) => {
 const registerUser = asyncHandler(async (req, res) => {
   try {
     const existingUser = await getUserByEmailDB(req.body.email)
-    if(existingUser){
+    if (existingUser) {
       throw new Error('Email already in use')
     }
     const user = {
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password
     };
     const newUser = await registerUserDB(user);
     generateToken(res, newUser.id)
@@ -45,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
   } catch (error) {
     throw error
   }
-  
+
 })
 
 //@desc Logout user
@@ -65,7 +67,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 const getUserProfile = asyncHandler(async (req, res) => {
   try {
     const user = req.user
-    if(user){
+    if (user) {
       res.status(200).json(user)
     } else {
       throw new Error('Not authorised')
@@ -82,7 +84,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 //@access private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const updatedDetails = req.body
-  console.log({userId: req.user.id})
   const updatedUser = await updateUserProfileDB(req.user.id, updatedDetails)
   res.status(201).json(updatedUser)
 })
