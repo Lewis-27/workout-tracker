@@ -30,6 +30,7 @@ import ExerciseListing from '@/components/ExerciseListing'
 import AddCard from '@/components/AddCard'
 import { SquarePen, Save, Trash } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { ChevronLeft } from 'lucide-react'
 
 const WorkoutPage = () => {
 
@@ -97,10 +98,20 @@ const WorkoutPage = () => {
   }, [editingDetails])
 
   return (
-    <div className="w-full flex flex-col gap-4 items-center justify-center ">
+    <div className="w-full flex flex-col gap-4 items-center justify-center pb-8">
+      
+
       <Card className='px-2 '>
-        <CardHeader className='text-center'>
-          <CardTitle>
+        <CardHeader className='text-center relative'>
+          <CardTitle className={'pt-2 pb-2 relative'}>
+          <div className="flex w-full absolute top-0">
+            <Link to={'/'}>
+              <Button variant='ghost' className='flex items-center gap-1' >
+                  <ChevronLeft size={20} />
+                  <div className="">Back </div>
+              </Button>
+              </Link>
+          </div>
             {editingDetails
               ? <div className="flex items-center justify-center gap-2">
                 <Input
@@ -128,7 +139,7 @@ const WorkoutPage = () => {
             }
 
           </CardTitle>
-          <CardAction>
+          <CardAction className={'my-auto absolute top-1 right-8 '}>
             <Button variant='ghost' size='sm' onClick={(e) => setEditingDetails(!editingDetails)}>
               {editingDetails ? <Save /> : <SquarePen />}
             </Button>

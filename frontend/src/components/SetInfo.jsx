@@ -2,18 +2,17 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import { useQueryClient, useMutation } from '@tanstack/react-query'
-import { 
-  Item,
-  ItemContent
-} from './ui/item'
-import {
-  Field
-} from './ui/field'
 import { Input } from './ui/input'
+import { 
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput
+} from './ui/input-group'
+import { Separator } from './ui/separator'
 import { Button } from './ui/button'
 import { Trash } from 'lucide-react'
 
-const SetInfo = ({set}) => {
+const SetInfo = ({set, editingDetails}) => {
 
   const queryClient = useQueryClient()
 
@@ -49,37 +48,45 @@ useEffect(() => {
 }, [weight, reps])
 
   return (
-    <div className="flex items-center justify-between ">
-      <div className='flex gap-4 text-lg '>
-        <div className="flex gap-1 items-center justify-start ">
-          {/* <Item variant='outline' className=' min-w-12 text-center '>
-            <ItemContent>{set.weight}</ItemContent>
-          </Item>  */}
-          <Input 
-            className={'w-16 h-12 text-center'} 
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-          />
-          <div className="text-gray-500">kg</div>
+
+      <div className='flex gap-2 text-lg'>
+        <div className="">
+            <InputGroup className={' hover:bg-gray-100 transition duration-300'}>
+              <InputGroupInput 
+                className=''
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
+              >
+              </InputGroupInput>
+              <InputGroupAddon  align='inline-end'>
+                kg
+              </InputGroupAddon>
+            </InputGroup>
         </div>
-        <div className="flex items-center">x</div>
-        <div className="flex gap-1 items-center justify-start">
-          {/* <Item variant='outline' className=' min-w-12 text-center '>
-            <ItemContent>{set.reps}</ItemContent>
-          </Item>  */}
-          <Input 
-            className={'w-14 h-12 text-center'}
-            value={reps}
-            onChange={(e) => setReps(e.target.value)}
-          />
-          <div className="text-gray-500">reps</div>
+        
+        <div className="">
+          <InputGroup className={' hover:bg-gray-100 transition duration-300'}>
+              <InputGroupInput 
+                value={reps}
+                onChange={(e) => setReps(e.target.value)}
+              >
+              
+              </InputGroupInput>
+              <InputGroupAddon align='inline-end'>
+                reps
+              </InputGroupAddon>
+          </InputGroup>
         </div>
+
+        {editingDetails 
+          ? <Button 
+              className='hover:bg-red-500 text-red-500 hover:text-white transition duration-300'
+              variant='ghost' 
+              onClick={(e) => removeSetMutation.mutate()}
+            ><Trash className='' strokeWidth={2.5}/></Button>
+          :<></>
+        }
       </div>
-      <Button 
-        variant='destructive' 
-        onClick={(e) => removeSetMutation.mutate()}
-      ><Trash className=''/></Button>
-    </div>
   )
 }
 

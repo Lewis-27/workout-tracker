@@ -3,13 +3,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {
   Item,
   ItemContent,
-  ItemTitle,
-  ItemActions,
   ItemMedia
 } from './ui/item'
 import { PlusCircle } from 'lucide-react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 
 const AddWorkoutItem = () => {
 

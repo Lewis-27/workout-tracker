@@ -20,13 +20,13 @@ import {
 } from './ui/alert-dialog'
 import { Button } from './ui/button'
 import { Spinner } from './ui/spinner'
+import { Separator } from './ui/separator'
 import { SquarePen, Save } from 'lucide-react'
-import { Link } from 'react-router-dom'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import SetInfo from './SetInfo'
 import { Input } from './ui/input'
-import { Field, FieldDescription, FieldLabel } from './ui/field'
+import { Field, FieldLabel } from './ui/field'
 
 const ExerciseListing = ({ exercise }) => {
 
@@ -135,9 +135,9 @@ const ExerciseListing = ({ exercise }) => {
             </CardAction>
           </>}
       </CardHeader>
-      <CardContent>
-        {isPending ? <Spinner className='m-auto my-[40px] size-16'></Spinner> : <div className="flex flex-col gap-4">
-          {sets.map((set) => <SetInfo key={set.id} set={set} />)}
+      <CardContent >
+        {isPending ? <Spinner className='m-auto my-10 size-16'></Spinner> : <div className="flex flex-col gap-4">
+          {sets.map((set) => <><SetInfo key={set.id} set={set} editingDetails={editingDetails}/><Separator /></>)}
           {editingDetails
             ? <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -171,7 +171,7 @@ const ExerciseListing = ({ exercise }) => {
               variant='outline'
               className={'w-full'}
               onClick={(e) => addSetMutation.mutate()}
-            >Add Set</Button>}
+            >+ Add Set</Button>}
         </div>}
       </CardContent>
     </Card>

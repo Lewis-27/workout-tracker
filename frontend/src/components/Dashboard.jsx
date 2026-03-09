@@ -1,25 +1,24 @@
-import React, { useEffect, useState, useMemo } from 'react'
 import { useUserStore } from '@/stores/userStore'
 import { useWorkoutStore } from '@/stores/workoutStore'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import {
   Card,
   CardHeader,
   CardTitle,
   CardContent,
-  CardDescription,
 } from './ui/card'
+
 import { Spinner } from './ui/spinner'
 import WorkoutListing from './WorkoutListing'
 import AddWorkoutItem from './AddWorkoutItem'
+
 
 const Dashboard = () => {
   const user = useUserStore((state) => state.user)
   const workouts = useWorkoutStore((state) => state.workouts)
   const setWorkouts = useWorkoutStore((state) => state.setWorkouts)
-
-
 
   const fetchWorkoutsQuery = useQuery({
     queryKey: ['workouts', user],
@@ -32,7 +31,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className='w-full px-2 h-150 flex flex-col gap-4 items-start justify-start md:px-24 lg:px-32 '>
+    <div className='w-full px-2 h-150 flex flex-col gap-4 items-start justify-start md:px-24 lg:px-32 pb-8'>
       <Card className={'w-full'}>
         <CardHeader>
           <CardTitle><h1 className=' text-center text-xl'>My Workouts</h1>

@@ -89,14 +89,14 @@ const EditProfilePage = () => {
   }, [updateUserDetailsMutation])
 
   return (
-    <div className='w-full h-150 flex flex-col gap-4 items-start justify-start lg:px-64 xl:px-128'>
-      <Card className={'w-full'}>
+    <div className='flex items-center justify-center w-full h-150'>
+      <Card>
         <CardHeader>
           <CardTitle>Edit Profile</CardTitle>
           <CardDescription>Enter new details to update your profile</CardDescription>
         </CardHeader>
         <CardContent>
-          <FieldSet>
+          <FieldSet className={'w-100'}>
             <Field>
               <FieldTitle>
                 Name

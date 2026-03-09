@@ -7,7 +7,6 @@ import {
   NavigationMenuTrigger,
   NavigationMenuLink,
   NavigationMenuList,
-  navigationMenuTriggerStyle
 } from '@/components/ui/navigation-menu'
 import { Button } from './ui/button'
 import { useUserStore } from '@/stores/userStore'
@@ -26,7 +25,7 @@ const Header = () => {
 
 
   return (
-    <div id='nav' className="px-4 lg:px-32 xl:px-32 top-0 left-0 sticky">
+    <div id='nav' className="px-4 lg:px-32 xl:px-32 top-0 left-0 sticky z-100">
     <div className={scrolled 
         ? "p-4 top-0 left-0 flex flex-row items-center justify-between bg-white shadow border border-gray-200 rounded-b-xl " 
         : "p-4 top-0 left-0 flex flex-row items-center justify-between  rounded-b-xl"}>
@@ -50,8 +49,7 @@ const Header = () => {
                         <Link to={'/logout'}>Logout</Link>
                       </NavigationMenuLink>  
                     </li>
-                  </ul>
-                  
+                  </ul>  
                 </NavigationMenuContent>
               </NavigationMenuItem>  
             </NavigationMenuList>
